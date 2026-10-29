@@ -36,6 +36,22 @@ def swap_letters(letter1, letter2): # swaps the resulting letter from two differ
         key_map[letter1] = key_map[letter2]
         key_map[letter2] = temp
 
+def manual_replace(ciphertext): # lets the user fix letters by hand until they are done
+    while True:
+        choice = input("swap a letter? (y/n): ")
+        if choice.lower() != 'y':
+            break
+        cipher_letter = input("cipher letter: ").upper()
+        plain_letter = input("change it to: ").upper()
+        if cipher_letter not in alphabet or plain_letter not in alphabet:
+            print("just one letter A-Z")
+            continue
+        for key, value in key_map.items(): # find the cipher letter that currently decrypts to plain_letter
+            if value == plain_letter:
+                swap_letters(cipher_letter, key) # swap so two cipher letters never decrypt to the same letter
+                break
+        print(decrypt_text(key_map, ciphertext))
+
 def display_mapping(map): #displays a map (used for key, or letter frequency)
     print("-"*15)
     print("Key -> Value")
@@ -66,5 +82,9 @@ real_key = {'P': 'A', 'Q': 'B', 'D': 'C', 'V': 'D', 'J': 'E', 'T': 'F', 'X': 'G'
 display_mapping(sorted_map)
 display_mapping(real_key)
 #print(decrypt_text(real_key, ciphertext))
+
+print(decrypt_text(key_map, ciphertext)) # partial decryption from frequency analysis
+manual_replace(ciphertext)
+print("final message: " + decrypt_text(key_map, ciphertext))
 
 
